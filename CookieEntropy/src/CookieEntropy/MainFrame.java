@@ -297,7 +297,7 @@ public class MainFrame extends javax.swing.JFrame
 
     public void receiveCookie (List<KeyValuePair> params,
             List<KeyValuePair> cookies) {
-        System.out.println("Receive Cookie\n");
+        System.out.println("Receive " + cookies.size() + " Cookie\n");
 	Iterator<KeyValuePair> it = cookies.iterator();
 	while (it.hasNext()) {
 	    KeyValuePair kv = it.next();
