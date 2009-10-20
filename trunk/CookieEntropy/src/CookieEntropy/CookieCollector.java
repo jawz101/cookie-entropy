@@ -19,6 +19,8 @@ import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
+import org.apache.http.client.params.ClientPNames;
+import org.apache.http.client.params.CookiePolicy;
 /**
  *
  * @author Ming
@@ -72,6 +74,10 @@ public class CookieCollector implements Runnable {
             for (i=0; i<times; i++) {
 		DefaultHttpClient httpclient = new DefaultHttpClient();
 	        HttpGet httpget = new HttpGet(urlLogin);
+
+		httpget.addHeader("User-Agent", "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.1.3)");
+		httpclient.getParams().setParameter(
+			ClientPNames.COOKIE_POLICY, CookiePolicy.BROWSER_COMPATIBILITY);
 
                 HttpResponse response = httpclient.execute(httpget);
                 HttpEntity entity = response.getEntity();
