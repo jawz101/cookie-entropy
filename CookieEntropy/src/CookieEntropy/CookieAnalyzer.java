@@ -99,7 +99,7 @@ public class CookieAnalyzer {
         String val = "";
         for (int i = 0; i < shortest; i++) {
             for (int j = 0; j < arrayVals.length; j++) {
-                val = val + arrayVals[j].substring(i, i + 1);
+                val = val + arrayVals[j].charAt(i);
             }
             entropyStr[i] = "Col " + (int) (i + 1) + ": " + df.format(entropy(val));
             val = "";
