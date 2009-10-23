@@ -93,10 +93,15 @@ public class CookieAnalyzer {
      */
     public String[] cookieEntropy() {
         DecimalFormat df = new DecimalFormat("0.000");
+        //converts the values List to an array for easier manipulation
         String[] arrayVals = values.toArray(new String[0]);
+        //finds the shortest char length of all cookie values
         int shortest = findShortest(arrayVals);
         String[] entropyStr = new String[shortest];
+        //val stores the value of the column splits into a String
         String val = "";
+        //Splits all cookie value strings by column and creates new strings
+        //to calculate entropy
         for (int i = 0; i < shortest; i++) {
             for (int j = 0; j < arrayVals.length; j++) {
                 val = val + arrayVals[j].charAt(i);
@@ -116,28 +121,38 @@ public class CookieAnalyzer {
      * @return entropy as a double
      */
     public double entropy(String values) {
+        //number of values to compare
         int size = values.length();
+        //creates a char array of each value
         char[] chars = values.toCharArray();
+        //sorts the array so we can determine which chars are different
         Arrays.sort(chars);
         ArrayList<ValueCounts> counts = new ArrayList<ValueCounts>();
         int count = 1;
         for (int i = 0; i < size; i++) {
+            //i<size-1 avoids array index out of bounds exception
+            //checks if the values next to each other are equal and increments
+            //count variable if they are
             if (i < size - 1 && chars[i] == chars[i + 1]) {
                 count++;
+            //if they are different, then creates ValueCounts object with the
+            //count and the char value
             } else {
                 counts.add(new ValueCounts(count, chars[i]));
                 count = 1;
             }
         }
+
         double entropy = 0.0;
-        //System.out.println(counts.size());
         Iterator<ValueCounts> countsIterator = counts.iterator();
         while (countsIterator.hasNext()) {
+            //gets the count of the number of times the char appeared in the string
             int c = countsIterator.next().count;
+            //calculates the probability the char appears in the string based
+            //on the total number of chars
             double probability = (double) c / (double) size;
-            //System.out.println(probability);
+            //uses Shannon's entropy formula for information theory
             entropy = entropy + (probability * (double) (Math.log10(probability) / Math.log10(2)));
-            //System.out.println(entropy);
         }
         return entropy;
     }
@@ -150,8 +165,11 @@ public class CookieAnalyzer {
      * Array
      */
     private int findShortest(String[] arr) {
+        //sets initial value to largest integer value
         int shortest = Integer.MAX_VALUE;
         for (int i = 0; i < arr.length; i++){
+            //checks if length is shorter than the shortest and if it is
+            //sets to new shortest
             if (arr[i].length() < shortest)
                 shortest = arr[i].length();
         }
@@ -165,23 +183,32 @@ public class CookieAnalyzer {
      * of non-fixed length cookie values
      */
     public String countChars() {
-        //char array is used to determine if there are fixed length cookie values or not
+        // Char array is used to determine if there are fixed length cookie
+        // values or not
         int chars[] = new int[values.size()];
+        //boolean to determine if fixed or variable length
         boolean variable = false;
+        //Counts the number of characters in each String
         String count = "";
         Iterator<String> valuesIterator = values.iterator();
         int i = 0;
         while (valuesIterator.hasNext()) {
+            //Sets current String value to value
             String value = valuesIterator.next().toString();
+            //Sets the length in a char array
             chars[i] = value.length();
             if (i != 0) {
+                //checks if the length is different and if it is, it is variable
+                //length
                 if (value.length() != chars[i - 1]) {
                     variable = true;
                 }
             }
+            //creates a string of all the lengths
             count = count + " " + value.length();
             i++;
         }
+        
         if (variable) {
             return "Not fixed length. Character lengths of:" + count;
         } else {
@@ -202,36 +229,42 @@ public class CookieAnalyzer {
             value = value + valuesIterator.next().toString();
         }
 
+        //Regex to find ASCII strings
         Pattern p = Pattern.compile("^[\\x00-\\x7F]+$");
         Matcher m = p.matcher(value);
         if (m.find()) {
             type = ASCII;
         }
 
+        //Regex to find base64 strings
         p = Pattern.compile("^[A-Za-z0-9/=]+$");
         m = p.matcher(value);
         if (m.find()) {
             type = BASE64;
         }
 
+        //Regex to find hexadecimal strings
         p = Pattern.compile("^[0-9a-fA-F]+$");
         m = p.matcher(value);
         if (m.find()) {
             type = HEX;
         }
 
+        //Regex to find decimal strings
         p = Pattern.compile("^[0-9]+$");
         m = p.matcher(value);
         if (m.find()) {
             type = DECIMAL;
         }
 
+        //Regex to find binary strings
         p = Pattern.compile("^[01]+$");
         m = p.matcher(value);
         if (m.find()) {
             type = BINARY;
         }
 
+        //Returns type based on regex findings
         if (type == HEX) {
             return "Hexadecimal Values";
         } else if (type == ASCII) {
@@ -258,9 +291,12 @@ public class CookieAnalyzer {
      * @return Returns the session management type
      */
     public String sessionManagement() {
+        //Default value
         String session = "Unknown or Non Session Management Key";
+        //Regex to find Google Analytics cookie keys
         Pattern p = Pattern.compile("^[__utm]");
         Matcher m = p.matcher(key);
+        //Searches through a few common session management key strings
         if (m.find()) {
             session = "Google Analytics used";
         } else if (key.equals("ASPSESSIONID")) {
@@ -286,6 +322,15 @@ public class CookieAnalyzer {
         values.add("12358784359875ff");
         values.add("4234534f3345d35c");
         values.add("69873aac24545ed5");
+        values.add("69873aac245634d5");
+        values.add("69873a6644545ed5");
+        values.add("69873aac54545ed5");
+        values.add("69873aac24545645");
+        values.add("69873aac24555ed5");
+        values.add("69873aac24545ed5");
+        values.add("69873aac24545ed5");
+        values.add("69873aa453636ed5");
+        values.add("63563aac24545ed5");
         String key = "PHPSESSID";
         CookieValues cv = new CookieValues();
         cv.key = key;
