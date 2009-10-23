@@ -99,4 +99,52 @@ public class CookieCollector implements Runnable {
             eventHandler.receiveException(e);
         }
     }
+
+    // decompose composit cookies values
+    //	e.g. PREF=ID=ec1502047692c217:TM=1256251566:LM=1256251566:S=wfMouMqDAS9maRZa
+    // return simple cookie values
+    static List<KeyValuePair> decomposeCookies(List<KeyValuePair> cookies) {
+	int i;
+	Iterator<KeyValuePair> it = cookies.iterator();
+	List<KeyValuePair> result = new LinkedList<KeyValuePair>();
+
+	while (it.hasNext()) {
+	    KeyValuePair kv = it.next();
+	    String[] terms = kv.value.split(":");
+	    if (terms == null)
+		terms = kv.value.split("&");
+
+	    if (terms == null) {    // this is a simple cookie
+		result.add(kv);
+		continue;
+	    }
+
+	    // Further check if we have single '=' in each decomposed cookie
+	    boolean true_composit = true;
+	    for (i=0; i<terms.length; i++) {
+		int first_eq = terms[i].indexOf('=');
+		int last_eq = terms[i].lastIndexOf('=');
+		if (first_eq == -1
+			|| last_eq == -1
+			|| first_eq != last_eq) {
+		    true_composit = false;
+		}
+	    }
+
+	    if (!true_composit) {   // return the simple cookie directly
+		result.add(kv);
+		continue;
+
+	    }
+
+	    // here we get truely composit cookies
+	    for (i=0; i<terms.length; i++) {
+		String[] ss = terms[i].split("=");
+		// we should get two strings in ss!
+		result.add(new KeyValuePair(ss[0], ss[1]));
+	    }
+	}
+
+	return result;
+    }
 }
