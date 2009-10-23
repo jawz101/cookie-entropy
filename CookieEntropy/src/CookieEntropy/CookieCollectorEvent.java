@@ -19,7 +19,17 @@ class KeyValuePair {
         key = k;
         value = v;
     }
+
+    public String toString() {
+	return key + "=" + value;
+    }
 }
+
+class CookieValues {
+    public String key;
+    public String value[];
+}
+
 public interface CookieCollectorEvent {
     // be called when CookieCollector collect a cookie
     public void receiveCookie (List<KeyValuePair> params,
