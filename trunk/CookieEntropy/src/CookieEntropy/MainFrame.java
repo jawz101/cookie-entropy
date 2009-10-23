@@ -44,12 +44,11 @@ public class MainFrame extends javax.swing.JFrame
         btnRun = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         txtLoginURL = new javax.swing.JTextField();
-        btnLoad = new javax.swing.JButton();
-        btnSave = new javax.swing.JButton();
-        cboxMethod = new javax.swing.JComboBox();
-        jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         txtRepeats = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        cbbCookies = new javax.swing.JComboBox();
+        btnShowEntropy = new javax.swing.JButton();
         pnlTable = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -113,7 +112,7 @@ public class MainFrame extends javax.swing.JFrame
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Cookie Entropy Analysis"); // NOI18N
 
-        btnRun.setText("Collect!");
+        btnRun.setText("Collect");
         btnRun.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRunActionPerformed(evt);
@@ -124,27 +123,18 @@ public class MainFrame extends javax.swing.JFrame
 
         txtLoginURL.setText("http://www.google.com");
 
-        btnLoad.setText("Load");
-        btnLoad.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLoadActionPerformed(evt);
-            }
-        });
-
-        btnSave.setText("Save");
-
-        cboxMethod.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Get", "Post" }));
-        cboxMethod.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cboxMethodActionPerformed(evt);
-            }
-        });
-
-        jLabel3.setText("Method:");
-
         jLabel4.setText("Repeat:");
 
         txtRepeats.setText("10");
+
+        jLabel5.setText("Cookie:");
+
+        btnShowEntropy.setText("Entropy");
+        btnShowEntropy.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnShowEntropyActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -154,23 +144,21 @@ public class MainFrame extends javax.swing.JFrame
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
-                    .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtLoginURL, javax.swing.GroupLayout.PREFERRED_SIZE, 411, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(cboxMethod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel4)
-                        .addGap(18, 18, 18)
                         .addComponent(txtRepeats, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(31, 31, 31)
-                        .addComponent(btnRun)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel5)
                         .addGap(18, 18, 18)
-                        .addComponent(btnLoad)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnSave))
-                    .addComponent(txtLoginURL, javax.swing.GroupLayout.PREFERRED_SIZE, 411, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(433, Short.MAX_VALUE))
+                        .addComponent(cbbCookies, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(26, 26, 26)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(btnRun, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnShowEntropy, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(337, 337, 337))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -178,16 +166,15 @@ public class MainFrame extends javax.swing.JFrame
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
+                    .addComponent(btnRun)
                     .addComponent(txtLoginURL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(cboxMethod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4)
                     .addComponent(txtRepeats, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnRun)
-                    .addComponent(btnLoad)
-                    .addComponent(btnSave))
+                    .addComponent(btnShowEntropy)
+                    .addComponent(cbbCookies, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -215,11 +202,11 @@ public class MainFrame extends javax.swing.JFrame
         pnlTable.setLayout(pnlTableLayout);
         pnlTableLayout.setHorizontalGroup(
             pnlTableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 907, Short.MAX_VALUE)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 603, Short.MAX_VALUE)
         );
         pnlTableLayout.setVerticalGroup(
             pnlTableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 405, Short.MAX_VALUE)
         );
 
         getContentPane().add(pnlTable, java.awt.BorderLayout.CENTER);
@@ -242,17 +229,15 @@ public class MainFrame extends javax.swing.JFrame
 	new Thread(cc).start();
 }//GEN-LAST:event_btnRunActionPerformed
 
-    private void btnLoadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnLoadActionPerformed
-
-    private void cboxMethodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboxMethodActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cboxMethodActionPerformed
-
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
 	// TODO add your handling code here:
     }//GEN-LAST:event_jTable1MouseClicked
+
+    private void btnShowEntropyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShowEntropyActionPerformed
+	int cindex = cbbCookies.getSelectedIndex();
+	CookieValues cv = allCookieValues[cindex];
+	System.out.print(cv);
+    }//GEN-LAST:event_btnShowEntropyActionPerformed
 
     /**
     * @param args the command line arguments
@@ -268,6 +253,7 @@ public class MainFrame extends javax.swing.JFrame
     javax.swing.JTable tblCookie = null;
     Map<String, Integer> tblColumns = new HashMap<String, Integer>(); // holds column names and its index (from 0)
     int nextRow = 0;
+    CookieValues[] allCookieValues = null;
 
     public void recreateCookieTable(int rows, int cols) {
 	tblCookie = new javax.swing.JTable(rows, cols);
@@ -298,20 +284,30 @@ public class MainFrame extends javax.swing.JFrame
 	if (cookieTableNeedRecreate) {
 	    recreateCookieTable(cookieTableRows, c.size());
 	    tblColumns.clear();
+	    cbbCookies.removeAllItems();
+	    allCookieValues = new CookieValues[c.size()];
 	    for (int i=0; i<c.size(); i++) {
 		String name = c.get(i).key;
 		tblColumns.put(name, i);
+		cbbCookies.addItem(name);
 		tblCookie.getColumnModel().getColumn(i).setHeaderValue(name);
+
+		allCookieValues[i] = new CookieValues(name);
 	    }
+
+
 	    nextRow = 0;
 	    cookieTableNeedRecreate = false;
 	}
+
 	Iterator<KeyValuePair> it = c.iterator();
 	while (it.hasNext()) {
 	    KeyValuePair kv = it.next();
 	    Integer cidx = tblColumns.get(kv.key);
-	    if (cidx != null)
+	    if (cidx != null) {
 		tblCookie.setValueAt(kv.value, nextRow, cidx);
+		allCookieValues[cidx].addValue(kv.value);
+	    }
 	    System.out.println("key="+kv.key+"\tvalue="+kv.value);
 	}
 	nextRow ++;
@@ -326,15 +322,14 @@ public class MainFrame extends javax.swing.JFrame
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnLoad;
     private javax.swing.JButton btnRun;
-    private javax.swing.JButton btnSave;
-    private javax.swing.JComboBox cboxMethod;
+    private javax.swing.JButton btnShowEntropy;
+    private javax.swing.JComboBox cbbCookies;
     private javax.swing.JCheckBox chkUseLogout;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
