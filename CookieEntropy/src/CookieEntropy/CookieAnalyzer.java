@@ -124,7 +124,7 @@ public class CookieAnalyzer {
 		String[] arrayVals = values.toArray(new String[0]);
 		String[] entropyVals = new String[arrayVals.length];
 		for (int i = 0; i < arrayVals.length; i++) {
-			entropyVals[i] = "Cookie " + (int)(i+1) + ": "
+			entropyVals[i] = "Cookie " + (int) (i + 1) + ": "
 					+ df.format(entropy(arrayVals[i]));
 		}
 		return entropyVals;
@@ -336,25 +336,32 @@ public class CookieAnalyzer {
 	 */
 	public String sessionManagement() {
 		// Default value
-		String session = "Unknown or Non Session Management Key";
+		String session = "Unknown";
+		 if (key.equals("ASPSESSIONID")) {
+			session = " ASP Session ID used";
+		} else if (key.equals("PHPSESSID")) {
+			session = " PHP Session ID used";
+		} else if (key.equals("CFTOKEN") || key.equals("CFID")) {
+			session = " Coldfusion Session ID used";
+		} else if (key.equals("PHPSESSID")) {
+			session = " PHP Session ID used";
+		} else if (key.equals("JSESSIONID")) {
+			session = " JAVA (JSP) Session ID";
+		} 
+		return session;
+	}
+	
+	/**
+	 * Checks if the cookie is using Google Analytics
+	 * 
+	 * @return Returns boolean value true if using Google Analytics
+	 */
+	public boolean googleAnalytics(){
 		// Regex to find Google Analytics cookie keys
 		Pattern p = Pattern.compile("^[__utm]");
 		Matcher m = p.matcher(key);
 		// Searches through a few common session management key strings
-		if (m.find()) {
-			session = "Google Analytics used";
-		} else if (key.equals("ASPSESSIONID")) {
-			session = "ASP Session ID used";
-		} else if (key.equals("PHPSESSID")) {
-			session = "PHP Session ID used";
-		} else if (key.equals("CFTOKEN") || key.equals("CFID")) {
-			session = "Coldfusion Session ID used";
-		} else if (key.equals("PHPSESSID")) {
-			session = "PHP Session ID used";
-		} else if (key.equals("JSESSIONID")) {
-			session = "JAVA (JSP) Session ID";
-		}
-		return session;
+		return m.find();
 	}
 
 	/**
