@@ -77,7 +77,7 @@ public class CookieAnalyzer {
      */
     CookieAnalyzer(CookieValues cv) {
         this.values = cv.values;
-        this.key = cv.key;
+        this.key = cv.name;
     }
 
     /*************************************************************
@@ -333,7 +333,7 @@ public class CookieAnalyzer {
         values.add("63563aac24545ed5");
         String key = "PHPSESSID";
         CookieValues cv = new CookieValues();
-        cv.key = key;
+        cv.name = key;
         cv.values = values;
         CookieAnalyzer ca = new CookieAnalyzer(cv);
 
