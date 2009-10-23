@@ -28,6 +28,11 @@ class KeyValuePair {
 class CookieValues {
     public String key;
     public List<String> values;
+
+    public CookieValues () {
+	key = null;
+	values = new LinkedList<String>();
+    }
 }
 
 public interface CookieCollectorEvent {
