@@ -33,6 +33,11 @@ class CookieValues {
 	name = cookieName;
 	values = new LinkedList<String>();
     }
+    
+    public CookieValues (){
+    	name = "";
+    	values = new LinkedList<String>();
+    }
 
     public void addValue(String v) {
 	values.add(v);
