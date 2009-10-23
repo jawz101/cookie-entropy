@@ -26,12 +26,25 @@ class KeyValuePair {
 }
 
 class CookieValues {
-    public String key;
+    public String name;
     public List<String> values;
 
-    public CookieValues () {
-	key = null;
+    public CookieValues (String cookieName) {
+	name = cookieName;
 	values = new LinkedList<String>();
+    }
+
+    public void addValue(String v) {
+	values.add(v);
+    }
+
+    // return a concatenated string of all values
+    public String allValues() {
+	String res = "";
+	Iterator<String> it = values.iterator();
+	while (it.hasNext())
+	    res = res + it.next();
+	return res;
     }
 }
 
@@ -41,4 +54,6 @@ public interface CookieCollectorEvent {
             List<KeyValuePair> cookies);
     // be called when CookieCollector occurs error and need to stop
     public void receiveException (Exception e);
+
+    public void receiveThreadEnds();
 }
