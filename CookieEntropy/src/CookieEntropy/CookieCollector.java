@@ -98,11 +98,18 @@ public class CookieCollector implements Runnable {
             // pass the exception to the caller thread
             eventHandler.receiveException(e);
         }
+
+	eventHandler.receiveThreadEnds();
     }
 
+    static String removeTrailingEqualSigns(String s) {
+	while (s.lastIndexOf('=') == s.length()-1)
+	    s = s.substring(0, s.length()-1);
+	return s;
+    }
     // decompose composit cookies values
     //	e.g. PREF=ID=ec1502047692c217:TM=1256251566:LM=1256251566:S=wfMouMqDAS9maRZa
-    // return simple cookie values
+    // return simple cookies
     static List<KeyValuePair> decomposeCookies(List<KeyValuePair> cookies) {
 	int i;
 	Iterator<KeyValuePair> it = cookies.iterator();
@@ -110,23 +117,28 @@ public class CookieCollector implements Runnable {
 
 	while (it.hasNext()) {
 	    KeyValuePair kv = it.next();
+	    //System.out.println("Original Cookie: "+kv);
 	    String[] terms = kv.value.split(":");
-	    if (terms == null)
+	    if (terms.length == 1)
 		terms = kv.value.split("&");
 
-	    if (terms == null) {    // this is a simple cookie
-		result.add(kv);
+	    if (terms.length == 1) {    // this is a simple cookie
+		String v = removeTrailingEqualSigns(kv.value);
+		String ss[] = v.split("=", 2);
+		KeyValuePair k;
+		if (ss.length == 1)
+		    k = new KeyValuePair(kv.key, ss[0]);
+		else
+		    k = new KeyValuePair(ss[0], ss[1]);
+		result.add(k);
 		continue;
 	    }
 
 	    // Further check if we have single '=' in each decomposed cookie
 	    boolean true_composit = true;
-	    for (i=0; i<terms.length; i++) {
-		int first_eq = terms[i].indexOf('=');
-		int last_eq = terms[i].lastIndexOf('=');
-		if (first_eq == -1
-			|| last_eq == -1
-			|| first_eq != last_eq) {
+	    // start from 1 because the first part may just be value
+	    for (i=1; i<terms.length; i++) {
+		if (terms[i].indexOf('=') == -1) {
 		    true_composit = false;
 		}
 	    }
@@ -137,11 +149,19 @@ public class CookieCollector implements Runnable {
 
 	    }
 
+	    //for (i=0; i<terms.length; i++)
+		//System.out.println("terms " +i+ "=" + terms[i]);
+	    int start_index = 0;
+	    if (terms[0].indexOf('=') == -1) {
+		result.add(new KeyValuePair(kv.key, terms[0]));
+		start_index = 1;
+	    }
 	    // here we get truely composit cookies
-	    for (i=0; i<terms.length; i++) {
+	    for (i=start_index; i<terms.length; i++) {
 		String[] ss = terms[i].split("=");
-		// we should get two strings in ss!
-		result.add(new KeyValuePair(ss[0], ss[1]));
+		// some cookie may have empty value
+		result.add(new KeyValuePair(ss[0], ss.length>1? ss[1]:""));
+
 	    }
 	}
 

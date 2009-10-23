@@ -41,8 +41,6 @@ public class MainFrame extends javax.swing.JFrame
         tblLoginParam = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        tblCookie = new javax.swing.JTable();
         btnRun = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         txtLoginURL = new javax.swing.JTextField();
@@ -52,6 +50,9 @@ public class MainFrame extends javax.swing.JFrame
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         txtRepeats = new javax.swing.JTextField();
+        pnlTable = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
 
         chkUseLogout.setText("Logout URL:");
 
@@ -112,19 +113,6 @@ public class MainFrame extends javax.swing.JFrame
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Cookie Entropy Analysis"); // NOI18N
 
-        tblCookie.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane3.setViewportView(tblCookie);
-
         btnRun.setText("Collect!");
         btnRun.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -182,8 +170,7 @@ public class MainFrame extends javax.swing.JFrame
                         .addGap(18, 18, 18)
                         .addComponent(btnSave))
                     .addComponent(txtLoginURL, javax.swing.GroupLayout.PREFERRED_SIZE, 411, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(412, Short.MAX_VALUE))
-            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 886, Short.MAX_VALUE)
+                .addContainerGap(433, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -201,22 +188,58 @@ public class MainFrame extends javax.swing.JFrame
                     .addComponent(btnRun)
                     .addComponent(btnLoad)
                     .addComponent(btnSave))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 293, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel4, java.awt.BorderLayout.NORTH);
 
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
+        jScrollPane3.setViewportView(jTable1);
+
+        javax.swing.GroupLayout pnlTableLayout = new javax.swing.GroupLayout(pnlTable);
+        pnlTable.setLayout(pnlTableLayout);
+        pnlTableLayout.setHorizontalGroup(
+            pnlTableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 907, Short.MAX_VALUE)
+        );
+        pnlTableLayout.setVerticalGroup(
+            pnlTableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE)
+        );
+
+        getContentPane().add(pnlTable, java.awt.BorderLayout.CENTER);
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    boolean cookieTableNeedRecreate = false;
+    int	    cookieTableRows = 0;
     private void btnRunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRunActionPerformed
         System.out.println("hello world");
         String loginURL = txtLoginURL.getText();
 	int repeats = Integer.parseInt(txtRepeats.getText());
         CookieCollector cc = new CookieCollector(loginURL, repeats, this);
 	cc.useHttpGetMethod();
-        new Thread(cc).start();
+
+	cookieTableNeedRecreate = true;
+	cookieTableRows = repeats;
+
+	btnRun.setEnabled(false);
+	new Thread(cc).start();
 }//GEN-LAST:event_btnRunActionPerformed
 
     private void btnLoadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadActionPerformed
@@ -226,6 +249,10 @@ public class MainFrame extends javax.swing.JFrame
     private void cboxMethodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboxMethodActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cboxMethodActionPerformed
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+	// TODO add your handling code here:
+    }//GEN-LAST:event_jTable1MouseClicked
 
     /**
     * @param args the command line arguments
@@ -238,22 +265,64 @@ public class MainFrame extends javax.swing.JFrame
         });
     }
 
+    javax.swing.JTable tblCookie = null;
+    Map<String, Integer> tblColumns = new HashMap<String, Integer>(); // holds column names and its index (from 0)
+    int nextRow = 0;
+
+    public void recreateCookieTable(int rows, int cols) {
+	tblCookie = new javax.swing.JTable(rows, cols);
+	javax.swing.JScrollPane sp = new javax.swing.JScrollPane(tblCookie);
+	tblCookie.setFillsViewportHeight(true);
+	pnlTable.removeAll();
+
+	javax.swing.GroupLayout pnlTableLayout = new javax.swing.GroupLayout(pnlTable);
+	pnlTable.setLayout(pnlTableLayout);
+	pnlTableLayout.setHorizontalGroup(
+		pnlTableLayout.createParallelGroup(
+		    javax.swing.GroupLayout.Alignment.LEADING).addComponent(
+			sp, javax.swing.GroupLayout.DEFAULT_SIZE, 907, 
+			Short.MAX_VALUE));
+	pnlTableLayout.setVerticalGroup(
+		pnlTableLayout.createParallelGroup(
+		    javax.swing.GroupLayout.Alignment.LEADING).addComponent(
+			sp, javax.swing.GroupLayout.DEFAULT_SIZE, 384, 
+			Short.MAX_VALUE));
+    }
+
     public void receiveCookie (List<KeyValuePair> params,
             List<KeyValuePair> cookies) {
         System.out.println("Receive " + cookies.size() + " Cookie\n");
 
 	List<KeyValuePair> c = CookieCollector.decomposeCookies(cookies);
-	
+
+	if (cookieTableNeedRecreate) {
+	    recreateCookieTable(cookieTableRows, c.size());
+	    tblColumns.clear();
+	    for (int i=0; i<c.size(); i++) {
+		String name = c.get(i).key;
+		tblColumns.put(name, i);
+		tblCookie.getColumnModel().getColumn(i).setHeaderValue(name);
+	    }
+	    nextRow = 0;
+	    cookieTableNeedRecreate = false;
+	}
 	Iterator<KeyValuePair> it = c.iterator();
 	while (it.hasNext()) {
 	    KeyValuePair kv = it.next();
+	    Integer cidx = tblColumns.get(kv.key);
+	    if (cidx != null)
+		tblCookie.setValueAt(kv.value, nextRow, cidx);
 	    System.out.println("key="+kv.key+"\tvalue="+kv.value);
 	}
-
+	nextRow ++;
     }
 
     public void receiveException (Exception e) {
         System.out.println("Receive Exception\n" + e);
+    }
+
+    public void receiveThreadEnds () {
+	btnRun.setEnabled(true);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -270,7 +339,8 @@ public class MainFrame extends javax.swing.JFrame
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTable tblCookie;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JPanel pnlTable;
     private javax.swing.JTable tblLoginParam;
     private javax.swing.JTextField txtLoginURL;
     private javax.swing.JTextField txtLogoutURL;
