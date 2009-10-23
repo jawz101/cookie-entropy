@@ -46,6 +46,14 @@ class CookieValues {
 	    res = res + it.next();
 	return res;
     }
+
+    public String toString() {
+	String r = "Cookie name="+name+" has "+values.size()+" values:\n";
+	Iterator<String> it = values.iterator();
+	while (it.hasNext())
+	    r = r + it.next() + "\n";
+	return r;
+    }
 }
 
 public interface CookieCollectorEvent {
