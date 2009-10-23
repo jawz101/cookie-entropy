@@ -27,7 +27,7 @@ class KeyValuePair {
 
 class CookieValues {
     public String key;
-    public String value[];
+    public List<String> values;
 }
 
 public interface CookieCollectorEvent {
