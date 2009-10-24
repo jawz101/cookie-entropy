@@ -173,12 +173,6 @@ public class MainFrame extends javax.swing.JFrame implements
             }
         });
 
-        jLabel3.setText("123");
-
-        jLabel7.setText("abc");
-
-        jLabel6.setText("abcd");
-
         jLabel1.setText("URL:");
 
         txtLoginURL.setText("http://www.google.com");
@@ -308,7 +302,7 @@ public class MainFrame extends javax.swing.JFrame implements
                             .addComponent(jLabel7))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel6)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         jTabbedPane1.getAccessibleContext().setAccessibleName("TabbedPane");
