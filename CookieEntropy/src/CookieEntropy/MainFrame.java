@@ -11,7 +11,11 @@
 
 package CookieEntropy;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
+
+import javax.swing.JFileChooser;
 
 /**
  * 
@@ -169,11 +173,11 @@ public class MainFrame extends javax.swing.JFrame implements
             }
         });
 
-        jLabel3.setText("123");
+        jLabel3.setText("");
 
-        jLabel7.setText("abc");
+        jLabel7.setText("");
 
-        jLabel6.setText("abcd");
+        jLabel6.setText("");
 
         jLabel1.setText("URL:");
 
@@ -223,11 +227,21 @@ public class MainFrame extends javax.swing.JFrame implements
         jTabbedPane1.addTab("Collect Cookies", jPanel2);
 
         jButton1.setText("Select File");
-
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSelectFileActionPerformed(evt);
+            }
+        });
+        
         jLabel8.setText("Choose Paros Data File:");
 
         jButton2.setText("Get Cookies");
-
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGetCookiesActionPerformed(evt);
+            }
+        });
+        
         jTextField1.setText("google.com");
 
         jLabel9.setText("Choose Host:");
@@ -335,7 +349,35 @@ public class MainFrame extends javax.swing.JFrame implements
 		new Thread(cc).start();
 		jLabel6.setText("Session Management: Unknown or not used");
 	}// GEN-LAST:event_btnRunActionPerformed
-
+	
+	private void btnSelectFileActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnRunActionPerformed
+		JFileChooser jfc = new JFileChooser(System.getProperty("user.dir"));
+		jfc.addChoosableFileFilter(new ParosDataFileFilter());
+		if (jfc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+				file = jfc.getSelectedFile();
+		}
+	}// GEN-LAST:event_btnRunActionPerformed
+	
+	private void btnGetCookiesActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnRunActionPerformed
+		String host = jTextField1.getText();
+		try {
+		ReadParosData rpd = new ReadParosData(file, host);
+		
+		String[] cookies = rpd.getCookies();
+		
+		for (int i = 0; i < cookies.length; i++){
+			CookieParser cp = new CookieParser(cookies[i]);
+			List<KeyValuePair> cookieList = cp.parseCookie();
+			Iterator<KeyValuePair> cookieIterator = cookieList.iterator();
+			while (cookieIterator.hasNext()) {
+				System.out.println(cookieIterator.next().toString());
+			}
+		}
+		}catch (IOException ioe){
+			System.out.println("Error reading file!");
+		}
+	}
+	
 	//private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_jTable1MouseClicked
 		// TODO add your handling code here:
 	//}// GEN-LAST:event_jTable1MouseClicked
@@ -343,7 +385,17 @@ public class MainFrame extends javax.swing.JFrame implements
 	private void btnShowEntropyActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnShowEntropyActionPerformed
 		int cindex = cbbCookies.getSelectedIndex();
 		CookieValues cv = allCookieValues[cindex];
-		System.out.print(cv);
+		CookieAnalyzer ca = new CookieAnalyzer(cv);
+		System.out.println(ca.encoding());
+		System.out.println(ca.countChars());
+		System.out.println(ca.totalEntropy());
+		String[] entropy = ca.columnEntropy();
+		for (int i = 0; i < entropy.length; i++)
+			System.out.println(entropy[i]);
+		entropy = ca.cookieEntropy();
+		for (int i = 0; i < entropy.length; i++)
+			System.out.println(entropy[i]);
+		//System.out.print(cv);
 	}// GEN-LAST:event_btnShowEntropyActionPerformed
 
 	/**
@@ -470,4 +522,26 @@ public class MainFrame extends javax.swing.JFrame implements
     private javax.swing.JTextField txtRepeats;
     // End of variables declaration//GEN-END:variables
 	private boolean characteristics = true;
+	private File file;
+}
+
+class ParosDataFileFilter extends javax.swing.filechooser.FileFilter {
+
+    @Override public boolean accept(File f) {
+            String s = f.getName();
+            if (f.isDirectory())
+            	return true;
+            if (s.length() > 13) {
+                    s = s.substring(s.length() - 13, s.length());
+
+                    if (s.equalsIgnoreCase(".session.data"))
+                            return true;
+            }
+
+            return false;
+    }
+
+    @Override public String getDescription() {
+            return "Paros Data Files (*.session.data)";
+    }
 }
