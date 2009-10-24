@@ -173,11 +173,11 @@ public class MainFrame extends javax.swing.JFrame implements
             }
         });
 
-        jLabel3.setText("");
+        jLabel3.setText("123");
 
-        jLabel7.setText("");
+        jLabel7.setText("abc");
 
-        jLabel6.setText("");
+        jLabel6.setText("abcd");
 
         jLabel1.setText("URL:");
 
@@ -227,21 +227,11 @@ public class MainFrame extends javax.swing.JFrame implements
         jTabbedPane1.addTab("Collect Cookies", jPanel2);
 
         jButton1.setText("Select File");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSelectFileActionPerformed(evt);
-            }
-        });
-        
+
         jLabel8.setText("Choose Paros Data File:");
 
         jButton2.setText("Get Cookies");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGetCookiesActionPerformed(evt);
-            }
-        });
-        
+
         jTextField1.setText("google.com");
 
         jLabel9.setText("Choose Host:");
@@ -295,8 +285,8 @@ public class MainFrame extends javax.swing.JFrame implements
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel6)
                             .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(105, 105, 105)
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 296, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel7))))
                     .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 993, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
