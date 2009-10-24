@@ -63,9 +63,9 @@ public class MainFrame extends javax.swing.JFrame implements
         jLabel4 = new javax.swing.JLabel();
         txtRepeats = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        selectFile = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
+        getCookies = new javax.swing.JButton();
         jTextField1 = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
 
@@ -220,11 +220,21 @@ public class MainFrame extends javax.swing.JFrame implements
 
         jTabbedPane1.addTab("Collect Cookies", jPanel2);
 
-        jButton1.setText("Select File");
+        selectFile.setText("Select File");
+        selectFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selectFileActionPerformed(evt);
+            }
+        });
 
         jLabel8.setText("Choose Paros Data File:");
 
-        jButton2.setText("Get Cookies");
+        getCookies.setText("Get Cookies");
+        getCookies.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                getCookiesActionPerformed(evt);
+            }
+        });
 
         jTextField1.setText("google.com");
 
@@ -238,14 +248,14 @@ public class MainFrame extends javax.swing.JFrame implements
                 .addContainerGap()
                 .addComponent(jLabel8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton1)
+                .addComponent(selectFile)
                 .addGap(38, 38, 38)
                 .addComponent(jLabel9)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2)
-                .addContainerGap(414, Short.MAX_VALUE))
+                .addComponent(getCookies)
+                .addContainerGap(277, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -253,10 +263,10 @@ public class MainFrame extends javax.swing.JFrame implements
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
-                    .addComponent(jButton1)
+                    .addComponent(selectFile)
                     .addComponent(jLabel9)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2))
+                    .addComponent(getCookies))
                 .addContainerGap(16, Short.MAX_VALUE))
         );
 
@@ -282,8 +292,8 @@ public class MainFrame extends javax.swing.JFrame implements
                                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 296, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel7))))
-                    .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 993, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 856, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(144, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -315,6 +325,14 @@ public class MainFrame extends javax.swing.JFrame implements
         private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
             // TODO add your handling code here:
         }//GEN-LAST:event_jTable1MouseClicked
+
+        private void getCookiesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getCookiesActionPerformed
+            // TODO add your handling code here:
+        }//GEN-LAST:event_getCookiesActionPerformed
+
+        private void selectFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectFileActionPerformed
+            // TODO add your handling code here:
+        }//GEN-LAST:event_selectFileActionPerformed
 
 	boolean cookieTableNeedRecreate = false;
 	int cookieTableRows = 0;
@@ -479,8 +497,7 @@ public class MainFrame extends javax.swing.JFrame implements
     private javax.swing.JButton btnShowEntropy;
     private javax.swing.JComboBox cbbCookies;
     private javax.swing.JCheckBox chkUseLogout;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton getCookies;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -500,6 +517,7 @@ public class MainFrame extends javax.swing.JFrame implements
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JPanel pnlTable;
+    private javax.swing.JButton selectFile;
     private javax.swing.JTable tblLoginParam;
     private javax.swing.JTextField txtLoginURL;
     private javax.swing.JTextField txtLogoutURL;
