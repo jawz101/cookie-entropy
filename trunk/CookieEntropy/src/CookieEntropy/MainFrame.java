@@ -327,11 +327,31 @@ public class MainFrame extends javax.swing.JFrame implements
         }//GEN-LAST:event_jTable1MouseClicked
 
         private void getCookiesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getCookiesActionPerformed
-            // TODO add your handling code here:
+        	String host = jTextField1.getText();
+    		try {
+    		ReadParosData rpd = new ReadParosData(file, host);
+    		
+    		String[] cookies = rpd.getCookies();
+    		
+    		for (int i = 0; i < cookies.length; i++){
+    			CookieParser cp = new CookieParser(cookies[i]);
+    			List<KeyValuePair> cookieList = cp.parseCookie();
+    			Iterator<KeyValuePair> cookieIterator = cookieList.iterator();
+    			while (cookieIterator.hasNext()) {
+    				System.out.println(cookieIterator.next().toString());
+    			}
+    		}
+    		}catch (IOException ioe){
+    			System.out.println("Error reading file!");
+    		}
         }//GEN-LAST:event_getCookiesActionPerformed
 
         private void selectFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectFileActionPerformed
-            // TODO add your handling code here:
+        	JFileChooser jfc = new JFileChooser(System.getProperty("user.dir"));
+    		jfc.addChoosableFileFilter(new ParosDataFileFilter());
+    		if (jfc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+    				file = jfc.getSelectedFile();
+    		}
         }//GEN-LAST:event_selectFileActionPerformed
 
 	boolean cookieTableNeedRecreate = false;
@@ -351,34 +371,6 @@ public class MainFrame extends javax.swing.JFrame implements
 		new Thread(cc).start();
 		jLabel6.setText("Session Management: Unknown or not used");
 	}// GEN-LAST:event_btnRunActionPerformed
-	
-	private void btnSelectFileActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnRunActionPerformed
-		JFileChooser jfc = new JFileChooser(System.getProperty("user.dir"));
-		jfc.addChoosableFileFilter(new ParosDataFileFilter());
-		if (jfc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-				file = jfc.getSelectedFile();
-		}
-	}// GEN-LAST:event_btnRunActionPerformed
-	
-	private void btnGetCookiesActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnRunActionPerformed
-		String host = jTextField1.getText();
-		try {
-		ReadParosData rpd = new ReadParosData(file, host);
-		
-		String[] cookies = rpd.getCookies();
-		
-		for (int i = 0; i < cookies.length; i++){
-			CookieParser cp = new CookieParser(cookies[i]);
-			List<KeyValuePair> cookieList = cp.parseCookie();
-			Iterator<KeyValuePair> cookieIterator = cookieList.iterator();
-			while (cookieIterator.hasNext()) {
-				System.out.println(cookieIterator.next().toString());
-			}
-		}
-		}catch (IOException ioe){
-			System.out.println("Error reading file!");
-		}
-	}
 	
 	//private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_jTable1MouseClicked
 		// TODO add your handling code here:
