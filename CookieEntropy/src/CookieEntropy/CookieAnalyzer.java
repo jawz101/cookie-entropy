@@ -62,7 +62,7 @@ public class CookieAnalyzer {
 	/**
 	 * AlphaNumeric
 	 */
-	private static final int ALPHANUM = 6;
+	private static final int MD5 = 6;
 
 	/*************************************************************
 	 * CONSTRUCTOR
@@ -293,6 +293,13 @@ public class CookieAnalyzer {
 		if (m.find()) {
 			type = HEX;
 		}
+		
+		//Regex to find MD5 Hash strings
+		p = Pattern.compile("^[0-9a-fA-F]{32}$");
+		m = p.matcher(value);
+		if (m.find()) {
+			type = MD5;
+		}
 
 		// Regex to find decimal strings
 		p = Pattern.compile("^[0-9]+$");
@@ -317,8 +324,8 @@ public class CookieAnalyzer {
 			return "Decimal Values";
 		} else if (type == BASE64) {
 			return "Base64 Values";
-		} else if (type == ALPHANUM) {
-			return "AlphaNumeric Values";
+		} else if (type == MD5) {
+			return "MD5 Hash";
 		} else if (type == BINARY) {
 			return "Binary Values";
 		} else {
