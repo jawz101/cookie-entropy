@@ -333,10 +333,15 @@ public class MainFrame extends javax.swing.JFrame implements
     		
     		String[] cookies = rpd.getCookies();
     		
+    		cookieTableNeedRecreate = true;
+    		cookieTableRows = cookies.length;
+    		
     		for (int i = 0; i < cookies.length; i++){
     			CookieParser cp = new CookieParser(cookies[i]);
     			List<KeyValuePair> cookieList = cp.parseCookie();
     			Iterator<KeyValuePair> cookieIterator = cookieList.iterator();
+    			List params = new LinkedList<KeyValuePair>();
+    			this.receiveCookie(params, cookieList);
     			while (cookieIterator.hasNext()) {
     				System.out.println(cookieIterator.next().toString());
     			}
@@ -470,8 +475,6 @@ public class MainFrame extends javax.swing.JFrame implements
 		}
 		nextRow++;
 		if (characteristics) {
-			// we only need the first cookie
-			CookieAnalyzer ca = new CookieAnalyzer(allCookieValues[0]);
 			jLabel3.setText("Number of Cookie Parameters: " + c.size());
 		}
 	}
