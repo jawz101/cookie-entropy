@@ -575,24 +575,39 @@ public class MainFrame extends javax.swing.JFrame implements
 	// }// GEN-LAST:event_jTable1MouseClicked
 
 	private void btnShowEntropyActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnShowEntropyActionPerformed
-		try{
-		int cindex = cbbCookies.getSelectedIndex();
-		CookieValues cv = allCookieValues[cindex];
-		CookieAnalyzer ca = new CookieAnalyzer(cv);
-		System.out.println(ca.encoding());
-		System.out.println(ca.countChars());
-		System.out.println(ca.totalEntropy());
-		String[] entropy = ca.columnEntropy();
-		double[][] coords = new double[entropy.length][entropy.length];
-		for (int i = 0; i < entropy.length; i++){
-			coords[i][0] = (double)i;
-			coords[i][1] = Double.parseDouble(entropy[i]);
-		}
 		// Construct our bar chart dialog
-		EntropyChart ec = new EntropyChart();
-		ec.addSeries(coords);
+		//Entropies ent = new Entropies();
+
+		//java.awt.EventQueue.invokeLater(new Runnable() {
+		   // public void run() {
+		   try {
+			int cindex = cbbCookies.getSelectedIndex();
+			CookieValues cv = allCookieValues[cindex];
+			CookieAnalyzer ca = new CookieAnalyzer(cv);
+			System.out.println(ca.encoding());
+			System.out.println(ca.countChars());
+			System.out.println(ca.totalEntropy());
+			String[] entropy = ca.columnEntropy();
+			double[][] coords = new double[entropy.length][entropy.length];
+			for (int i = 0; i < entropy.length; i++){
+				coords[i][0] = (double)i;
+				coords[i][1] = Double.parseDouble(entropy[i]);
+			}
+			EntropyDialog ent = new EntropyDialog(this, false);
+			ent.setTitle("Cookie: " + cv.name);
+			ent.setSize(450, 300);
+			EntropyChart ec = new EntropyChart(ent,
+				cv.name, ca.totalEntropy(), ca.countChars(),
+				ca.encoding());
+			ec.addSeries(coords);
+			ent.setVisible(true);
+		   // }
+		//});
+
+		//EntropyChart ec = new EntropyChart();
+		//ec.addSeries(coords);
 		// Make the dialog visible
-		ec.setVisible(true);
+		//ec.setVisible(true);
 		}catch (Exception e){
 			System.out.println("Error getting entropy values");
 			JOptionPane.showMessageDialog(this, "Error Getting Entropy Data", "Error", JOptionPane.ERROR_MESSAGE);
