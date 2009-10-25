@@ -106,8 +106,7 @@ public class CookieAnalyzer {
 			for (int j = 0; j < arrayVals.length; j++) {
 				val = val + arrayVals[j].charAt(i);
 			}
-			entropyStr[i] = "Col " + (int) (i + 1) + ": "
-					+ df.format(entropy(val));
+			entropyStr[i] = df.format(entropy(val));
 			val = "";
 		}
 		return entropyStr;
@@ -317,17 +316,17 @@ public class CookieAnalyzer {
 
 		// Returns type based on regex findings
 		if (type == HEX) {
-			return "Hexadecimal Values";
+			return "Hexadecimal";
 		} else if (type == ASCII) {
-			return "ASCII Values";
+			return "ASCII";
 		} else if (type == DECIMAL) {
-			return "Decimal Values";
+			return "Decimal";
 		} else if (type == BASE64) {
-			return "Base64 Values";
+			return "Base64";
 		} else if (type == MD5) {
 			return "MD5 Hash";
 		} else if (type == BINARY) {
-			return "Binary Values";
+			return "Binary";
 		} else {
 			return "Unknown Character Set";
 		}
