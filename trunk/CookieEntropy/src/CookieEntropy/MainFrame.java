@@ -501,31 +501,26 @@ public class MainFrame extends javax.swing.JFrame implements
 			ReadParosData rpd = new ReadParosData(file, host);
 
 			String[] cookies = rpd.getCookies();
+			String old = "";
+			Arrays.sort(cookies);
+			//Sets same cookie values to null
+			for (int i = 0; i < cookies.length; i++){
+				if (cookies[i].equals(old)){
+					cookies[i] = null;
+				} else {
+					old = cookies[i];
+				}
+			}
 
 			cookieTableNeedRecreate = true;
 			cookieTableRows = cookies.length;
-			List<KeyValuePair> old = new LinkedList<KeyValuePair>();
 			for (int i = 0; i < cookies.length; i++) {
-				boolean different = true;
-				CookieParser cp = new CookieParser(cookies[i]);
-				List<KeyValuePair> cookieList = cp.parseCookie();
-				Iterator<KeyValuePair> oldIterator = old.iterator();
-				Iterator<KeyValuePair> cookieIterator = cookieList.iterator();
-				while (oldIterator.hasNext() && cookieIterator.hasNext()) {
-					if (oldIterator.next().value.equals(cookieIterator.next().value)) {
-						different = false;
-						break;
-					}
-				}
-				old = cookieList;
-				if (different) {
-					System.out.println(cookieList.iterator().next());
+				if (cookies[i] != null){
+					CookieParser cp = new CookieParser(cookies[i]);
+					List<KeyValuePair> cookieList = cp.parseCookie();
 					List<KeyValuePair> params = new LinkedList<KeyValuePair>();
 					this.receiveCookie(params, cookieList);
 				}
-				// while (cookieIterator.hasNext()) {
-				// System.out.println(cookieIterator.next().toString());
-				// }
 			}
 		} catch (IOException ioe) {
 			System.out.println("Error reading file!");
