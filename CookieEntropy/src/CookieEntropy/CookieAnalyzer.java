@@ -194,7 +194,7 @@ public class CookieAnalyzer {
 					+ (probability * (double) (Math.log10(probability) / Math
 							.log10(2)));
 		}
-		return entropy;
+		return entropy * (double)-1;
 	}
 
 	/**
