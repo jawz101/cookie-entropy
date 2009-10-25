@@ -575,6 +575,7 @@ public class MainFrame extends javax.swing.JFrame implements
 	// }// GEN-LAST:event_jTable1MouseClicked
 
 	private void btnShowEntropyActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnShowEntropyActionPerformed
+		try{
 		int cindex = cbbCookies.getSelectedIndex();
 		CookieValues cv = allCookieValues[cindex];
 		CookieAnalyzer ca = new CookieAnalyzer(cv);
@@ -592,6 +593,10 @@ public class MainFrame extends javax.swing.JFrame implements
 		ec.addSeries(coords);
 		// Make the dialog visible
 		ec.setVisible(true);
+		}catch (Exception e){
+			System.out.println("Error getting entropy values");
+			JOptionPane.showMessageDialog(this, "Error Getting Entropy Data", "Error", JOptionPane.ERROR_MESSAGE);
+		}
 		/*
 		entropy = ca.cookieEntropy();
 		for (int i = 0; i < entropy.length; i++)
