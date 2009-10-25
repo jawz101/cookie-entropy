@@ -575,11 +575,21 @@ public class MainFrame extends javax.swing.JFrame implements
 		System.out.println(ca.countChars());
 		System.out.println(ca.totalEntropy());
 		String[] entropy = ca.columnEntropy();
-		for (int i = 0; i < entropy.length; i++)
-			System.out.println(entropy[i]);
+		double[][] coords = new double[entropy.length][entropy.length];
+		for (int i = 0; i < entropy.length; i++){
+			coords[i][0] = (double)i;
+			coords[i][1] = Double.parseDouble(entropy[i]);
+		}
+		// Construct our bar chart dialog
+		EntropyChart ec = new EntropyChart();
+		ec.addSeries(coords);
+		// Make the dialog visible
+		ec.setVisible(true);
+		/*
 		entropy = ca.cookieEntropy();
 		for (int i = 0; i < entropy.length; i++)
 			System.out.println(entropy[i]);
+			*/
 		// System.out.print(cv);
 	}// GEN-LAST:event_btnShowEntropyActionPerformed
 
