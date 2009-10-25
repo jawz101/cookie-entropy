@@ -143,7 +143,7 @@ public class CookieAnalyzer {
 		for (int i = 0; i < arrayVals.length; i++) {
 			entropyStr = entropyStr + arrayVals[i];
 		}
-		entropyStr = "Total entropy: " + df.format(entropy(entropyStr));
+		entropyStr = "" + df.format(entropy(entropyStr));
 		return entropyStr;
 	}
 
@@ -252,10 +252,12 @@ public class CookieAnalyzer {
 		}
 
 		if (variable) {
-			return "Not fixed length. Character lengths of:" + count;
+			//return "Not fixed length. Character lengths of:" + count;
+		    return "variable";
 		} else {
-			return "Fixed length of " + Integer.toString(chars[0])
-					+ " characters";
+			//return "Fixed length of " + Integer.toString(chars[0])
+			//		+ " characters";
+		    return Integer.toString(chars[0]);
 		}
 	}
 

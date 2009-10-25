@@ -3,7 +3,7 @@ package CookieEntropy;
 /*
  OpenChart2 Java Charting Library and Toolkit
  Copyright (C) 2005-2007 Approximatrix, LLC
- Copyright (C) 2001  Sebastian Müller
+ Copyright (C) 2001  Sebastian Mï¿½ller
  http://www.approximatrix.com
 
  This library is free software; you can redistribute it and/or
@@ -51,49 +51,80 @@ import com.approximatrix.charting.CoordSystem;
  * @author armstrong
  * 
  */
-public class EntropyChart extends JDialog implements ActionListener {
+public class EntropyChart{
 
 	/** A menu item for closing the dialog */
-	JMenuItem m_exit = null;
+	//JMenuItem m_exit = null;
 
 	/** The panel containing our chart */
 	ChartPanel chartPanel = null;
 
 	/** Initializes the dialog and its chart in a ChartPanel dialog */
-	public EntropyChart() {
-		super();
+	public EntropyChart(JDialog dlg, String cookieName, String totalEntropy,
+		String cookieLen, String cookieEncoding) {
+		//super();
 
 		// Initialize GUI components
-		this.setTitle("Cookie Entropy");
+		//this.setTitle("Cookie Entropy");
 
 		// Make the dialog a reasonable size
-		this.setSize(500, 400);
+		//this.setSize(500, 400);
 
 		// Allow resize! It works seamlessly in Opechart2
-		this.setResizable(true);
+		//this.setResizable(true);
 
 		// The content pane
-		JPanel contentPane = new JPanel();
-		contentPane.setLayout(new BorderLayout());
-		this.setContentPane(contentPane);
+
+		JPanel chartPane = new JPanel();
+		chartPane.setLayout(new BorderLayout());
+		dlg.setContentPane(chartPane);
 
 		// Set up a menu on this dialog, just to show that everything plays
 		// well together.
-		JMenuBar menu_bar = new JMenuBar();
-		JMenu file_menu = new JMenu();
-		file_menu.setText("File");
-		m_exit = new JMenuItem();
-		m_exit.setText("Exit");
-		file_menu.add(m_exit);
-		menu_bar.add(file_menu);
-		this.setJMenuBar(menu_bar);
+		//JMenuBar menu_bar = new JMenuBar();
+		//JMenu file_menu = new JMenu();
+		//file_menu.setText("File");
+		//m_exit = new JMenuItem();
+		//m_exit.setText("Exit");
+		//file_menu.add(m_exit);
+		//menu_bar.add(file_menu);
+		//this.setJMenuBar(menu_bar);
 
 		// Make sure that on window close, we dispose of this dialog
-		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		//this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
 		// Set up this class as the action listener for our one menu item
-		m_exit.addActionListener(this);
-		contentPane.add(getChartPanel(), BorderLayout.CENTER);
+		//m_exit.addActionListener(this);
+
+		MultiScatterDataModel model = new MultiScatterDataModel();
+		model.setMinimumValueY(0);
+		model.setMaximumValueY(8);
+		//model.setAutoScale(false);
+		//model.setSeriesLineStyle(cookieLen, i)
+		CoordSystem coord = new CoordSystem(model, "Column", "Entropy");
+		//coord.setFirstYAxis(new Axis())
+		//coord.setXAxisUnit("1");
+
+		// Generate the chart panel
+		chartPanel = new ChartPanel(model, " Entropy: " + totalEntropy
+			+" Encoding: "+cookieEncoding+" Len: "+cookieLen);
+		chartPanel.getTitle().setFont(new java.awt.Font("Courier",
+			 java.awt.Font.PLAIN, 14));
+		// Add the coordinate system to the chart
+		chartPanel.setCoordSystem(coord);
+
+		// Add the chart renderer
+		MultiScatterChartRenderer renderer = new MultiScatterChartRenderer(
+					coord, model);
+
+		// Disable the point buffering in the renderer since this will be a
+		// dynamic graph
+		renderer.setAllowBuffer(false);
+
+		// Add a renderer to the chart
+		chartPanel.addChartRenderer(renderer, 0);
+
+		chartPane.add(chartPanel, BorderLayout.CENTER);
 	}
 
 	/** Constructs (if necessary) and returns a valid chart panel */
@@ -151,8 +182,8 @@ public class EntropyChart extends JDialog implements ActionListener {
 	 */
 	public void actionPerformed(java.awt.event.ActionEvent e) {
 		// If this was our exit button responding, dispose of the dialog
-		if (e.getSource() == m_exit)
-			dispose();
+		//if (e.getSource() == m_exit)
+			//dispose();
 	}
 
 	/** Adds another random series to the plot */
@@ -166,7 +197,12 @@ public class EntropyChart extends JDialog implements ActionListener {
 		// Get the current count of series
 		int series_count = model.getDataSetNumber();
 
-		model.addData(data, "Entropy");
+		String seriesName = "Entropy by column";
+		model.addData(data, seriesName);
+		model.setSeriesLine(seriesName, true);
+		//model.setSeriesMarker(seriesName, true);
+		model.setMinimumValueY(0);
+		model.setMaximumValueY(8);
 
 		// Set to markers only
 		//model.setSeriesLine("Series " + Integer.toString(series_count + 1),
@@ -194,9 +230,9 @@ public class EntropyChart extends JDialog implements ActionListener {
 		}
 
 		// Construct our bar chart dialog
-		EntropyChart temp = new EntropyChart();
+		//EntropyChart temp = new EntropyChart();
 
 		// Make the dialog visible
-		temp.setVisible(true);
+		//temp.setVisible(true);
 	}
 }
