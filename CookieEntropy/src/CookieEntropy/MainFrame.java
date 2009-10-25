@@ -487,6 +487,7 @@ public class MainFrame extends javax.swing.JFrame implements
 
 	private void getCookiesActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_getCookiesActionPerformed
 		String host = jTextField1.getText();
+		jLabel7.setText("");
 		try {
 			ReadParosData rpd = new ReadParosData(file, host);
 
@@ -506,16 +507,18 @@ public class MainFrame extends javax.swing.JFrame implements
 			}
 			
 			// Sets same cookie values to null
+			int count = 0;
 			for (int i = 0; i < cookies.length; i++) {
 				if (allCookies.contains(cookies[i])) {
 					cookies[i] = null;
 				} else {
 					allCookies += cookies[i];
+					count ++;
 				}
 			}
 			jLabel6.setText("Session Management: Unknown or not used");
 			cookieTableNeedRecreate = true;
-			cookieTableRows = cookies.length;
+			cookieTableRows = count;
 			for (int i = 0; i < cookies.length; i++) {
 				if (cookies[i] != null) {
 					CookieParser cp = new CookieParser(cookies[i]);
@@ -526,9 +529,12 @@ public class MainFrame extends javax.swing.JFrame implements
 			}
 		} catch (IOException ioe) {
 			System.out.println("Error reading file!");
-		} catch (Exception e){
+		} catch (NullPointerException npe){
 			System.out.println("No File Selected!");
 			JOptionPane.showMessageDialog(this,"No File Selected!", "Error", JOptionPane.ERROR_MESSAGE);
+		} catch (Exception e){
+			System.out.println("We've got some problems.....");
+			e.printStackTrace();
 		}
 	}// GEN-LAST:event_getCookiesActionPerformed
 
@@ -549,6 +555,7 @@ public class MainFrame extends javax.swing.JFrame implements
 
 	private void btnRunActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnRunActionPerformed
 		System.out.println("hello world");
+		jLabel7.setText("");
 		String loginURL = txtLoginURL.getText();
 		int repeats = Integer.parseInt(txtRepeats.getText());
 		CookieCollector cc = new CookieCollector(loginURL, repeats, this);

@@ -9,10 +9,11 @@ public class CookieParser {
 		this.cookies = cookies;
 	}
 
-	public List<KeyValuePair> parseCookie(){
+	public List<KeyValuePair> parseCookie() {
 		List<KeyValuePair> kvp = new LinkedList<KeyValuePair>();
 		String[] cookie = cookies.split("[:;]");
-		for (int i = 0; i < cookie.length; i++){
+		for (int i = 0; i < cookie.length; i++) {
+			cookie[i] = CookieCollector.removeTrailingEqualSigns(cookie[i]);
 			if (cookie[i].startsWith("PREF="))
 				cookie[i] = cookie[i].substring(5);
 			else if (cookie[i].startsWith("NID="))
@@ -20,16 +21,19 @@ public class CookieParser {
 			else if (cookie[i].startsWith("SNID="))
 				cookie[i] = cookie[i].substring(5);
 			int equal = cookie[i].indexOf("=");
-			String key = cookie[i].substring(0, equal);
-			key = this.removeLeadingSpace(key);
-			String value = cookie[i].substring(equal+1, cookie[i].length());
-			value = this.removeLeadingSpace(value);
-			kvp.add(new KeyValuePair(key, value));
+			if (equal != -1) {
+				String key = cookie[i].substring(0, equal);
+				key = this.removeLeadingSpace(key);
+				String value = cookie[i].substring(equal + 1, cookie[i]
+						.length());
+				value = this.removeLeadingSpace(value);
+				kvp.add(new KeyValuePair(key, value));
+			}
 		}
 		return kvp;
 	}
-	
-	public String removeLeadingSpace(String s){
+
+	public String removeLeadingSpace(String s) {
 		if (s.startsWith(" "))
 			return s.substring(1);
 		else
