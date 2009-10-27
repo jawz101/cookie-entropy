@@ -351,8 +351,6 @@ public class CookieAnalyzer {
 			session = " PHP Session ID used";
 		} else if (key.equals("CFTOKEN") || key.equals("CFID")) {
 			session = " Coldfusion Session ID used";
-		} else if (key.equals("PHPSESSID")) {
-			session = " PHP Session ID used";
 		} else if (key.equals("JSESSIONID")) {
 			session = " JAVA (JSP) Session ID";
 		} 
