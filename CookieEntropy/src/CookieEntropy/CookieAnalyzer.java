@@ -345,7 +345,7 @@ public class CookieAnalyzer {
 	public String sessionManagement() {
 		// Default value
 		String session = "Unknown";
-		 if (key.equals("ASPSESSIONID")) {
+		 if (key.equals("ASPSESSIONID") || key.contains("ASPSESS")) {
 			session = " ASP Session ID used";
 		} else if (key.equals("PHPSESSID")) {
 			session = " PHP Session ID used";
