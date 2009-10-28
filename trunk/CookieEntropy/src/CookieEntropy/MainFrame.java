@@ -554,7 +554,7 @@ public class MainFrame extends javax.swing.JFrame implements
 	int cookieTableRows = 0;
 
 	private void btnRunActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnRunActionPerformed
-		System.out.println("hello world");
+		//System.out.println("hello world");
 		jLabel7.setText("");
 		String loginURL = txtLoginURL.getText();
 		int repeats = Integer.parseInt(txtRepeats.getText());
@@ -589,17 +589,21 @@ public class MainFrame extends javax.swing.JFrame implements
 			System.out.println(ca.totalEntropy());
 			String[] entropy = ca.columnEntropy();
 			double[][] coords = new double[entropy.length][entropy.length];
+			double[] cols = new double[entropy.length];
+			String[] nums = new String[entropy.length];
+			double[] entropies = new double[entropy.length];
 			for (int i = 0; i < entropy.length; i++){
-				coords[i][0] = (double)i;
-				coords[i][1] = Double.parseDouble(entropy[i]);
+				cols[i] = i+1;
+				nums[i] = String.valueOf(i+1);
+				entropies[i] =  Double.parseDouble(entropy[i]);
 			}
 			EntropyDialog ent = new EntropyDialog(this, false);
-			ent.setTitle("Cookie: " + cv.name);
+			ent.setTitle("Cookie: " + cv.name + " | Count: "+cv.values.size());
 			ent.setSize(450, 300);
 			EntropyChart ec = new EntropyChart(ent,
 				cv.name, ca.totalEntropy(), ca.countChars(),
-				ca.encoding());
-			ec.addSeries(coords);
+				ca.encoding(), nums, entropies);
+			//ec.addSeries(cols, entropies);
 			ent.setVisible(true);
 		   // }
 		//});
@@ -658,7 +662,7 @@ public class MainFrame extends javax.swing.JFrame implements
 
 	public void receiveCookie(List<KeyValuePair> params,
 			List<KeyValuePair> cookies) {
-		System.out.println("Receive " + cookies.size() + " Cookie\n");
+		//System.out.println("Receive " + cookies.size() + " Cookie\n");
 
 		List<KeyValuePair> c = CookieCollector.decomposeCookies(cookies);
 
@@ -694,7 +698,7 @@ public class MainFrame extends javax.swing.JFrame implements
 				tblCookie.setValueAt(kv.value, nextRow, cidx);
 				allCookieValues[cidx].addValue(kv.value);
 			}
-			System.out.println("key=" + kv.key + "\tvalue=" + kv.value);
+			//System.out.println("key=" + kv.key + "\tvalue=" + kv.value);
 		}
 		nextRow++;
 		if (characteristics) {

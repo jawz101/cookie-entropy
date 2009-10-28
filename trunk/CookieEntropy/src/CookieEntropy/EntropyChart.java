@@ -35,10 +35,10 @@ import javax.swing.JButton;
 import java.awt.BorderLayout;
 import java.awt.event.ActionListener;
 
-import com.approximatrix.charting.model.MultiScatterDataModel;
-import com.approximatrix.charting.model.ScatterDataModel;
-import com.approximatrix.charting.swing.ChartPanel;
-import com.approximatrix.charting.render.MultiScatterChartRenderer;
+import com.approximatrix.charting.model.*;
+import com.approximatrix.charting.swing.*;
+import com.approximatrix.charting.render.*;
+import com.approximatrix.charting.coordsystem.*;
 import com.approximatrix.charting.CoordSystem;
 
 /**
@@ -58,181 +58,37 @@ public class EntropyChart{
 
 	/** The panel containing our chart */
 	ChartPanel chartPanel = null;
-
-	/** Initializes the dialog and its chart in a ChartPanel dialog */
 	public EntropyChart(JDialog dlg, String cookieName, String totalEntropy,
-		String cookieLen, String cookieEncoding) {
-		//super();
+		String cookieLen, String cookieEncoding, String[] x, double[] y) {
+	    JPanel chartPane = new JPanel();
+	    chartPane.setLayout(new BorderLayout());
+	    dlg.setContentPane(chartPane);
 
-		// Initialize GUI components
-		//this.setTitle("Cookie Entropy");
+	    double[][] data = new double[1][];
+	    data[0] = y;
+	    String[] row = new String[1];
+	    row[0] = " ";
+	    ObjectChartDataModel model = new ObjectChartDataModel(data, x, row);
+	    model.setMaximumValueY(8);
+	    model.setMinimumValueY(0);
+	    model.setAutoScale(false);
+	    //model.isAutoScale()
 
-		// Make the dialog a reasonable size
-		//this.setSize(500, 400);
+	    CoordSystem coord = new CoordSystem(model, "Column", "Entropy");
 
-		// Allow resize! It works seamlessly in Opechart2
-		//this.setResizable(true);
-
-		// The content pane
-
-		JPanel chartPane = new JPanel();
-		chartPane.setLayout(new BorderLayout());
-		dlg.setContentPane(chartPane);
-
-		// Set up a menu on this dialog, just to show that everything plays
-		// well together.
-		//JMenuBar menu_bar = new JMenuBar();
-		//JMenu file_menu = new JMenu();
-		//file_menu.setText("File");
-		//m_exit = new JMenuItem();
-		//m_exit.setText("Exit");
-		//file_menu.add(m_exit);
-		//menu_bar.add(file_menu);
-		//this.setJMenuBar(menu_bar);
-
-		// Make sure that on window close, we dispose of this dialog
-		//this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-
-		// Set up this class as the action listener for our one menu item
-		//m_exit.addActionListener(this);
-
-		MultiScatterDataModel model = new MultiScatterDataModel();
-		model.setMinimumValueY(0);
-		model.setMaximumValueY(8);
-		//model.setAutoScale(false);
-		//model.setSeriesLineStyle(cookieLen, i)
-		CoordSystem coord = new CoordSystem(model, "Column", "Entropy");
-		//coord.setFirstYAxis(new Axis())
-		//coord.setXAxisUnit("1");
-
-		// Generate the chart panel
-		chartPanel = new ChartPanel(model, " Entropy: " + totalEntropy
+	    chartPanel = new ChartPanel(model, " Entropy: " + totalEntropy
 			+" Encoding: "+cookieEncoding+" Len: "+cookieLen);
-		chartPanel.getTitle().setFont(new java.awt.Font("Courier",
+	    chartPanel.getTitle().setFont(new java.awt.Font("Courier",
 			 java.awt.Font.PLAIN, 14));
 		// Add the coordinate system to the chart
-		chartPanel.setCoordSystem(coord);
+	    chartPanel.setCoordSystem(coord);
 
-		// Add the chart renderer
-		MultiScatterChartRenderer renderer = new MultiScatterChartRenderer(
-					coord, model);
-
-		// Disable the point buffering in the renderer since this will be a
-		// dynamic graph
-		renderer.setAllowBuffer(false);
-
-		// Add a renderer to the chart
-		chartPanel.addChartRenderer(renderer, 0);
-
-		chartPane.add(chartPanel, BorderLayout.CENTER);
+	    LineChartRenderer renderer = new LineChartRenderer(coord, model);
+	    //renderer.setAllowBuffer(false);
+	    chartPanel.addChartRenderer(renderer, 0);
+	    chartPane.add(chartPanel, BorderLayout.CENTER);
+	    chartPanel.getLegend().setColorBox(new java.awt.Rectangle());
+	    chartPanel.repaint();
 	}
 
-	/** Constructs (if necessary) and returns a valid chart panel */
-	private ChartPanel getChartPanel() {
-
-		// Create the panel if necessary
-		if (chartPanel == null) {
-
-			// Create a MultiScatterDataModel
-			MultiScatterDataModel model = new MultiScatterDataModel();
-			// Add our default data sets
-			/*
-			for (int i = 0; i < INITIAL_LENGTHS.length; i++) {
-				// Generate random xy pairs
-				double[][] xy = getRandomSeries(INITIAL_LENGTHS[i]);
-
-				// Add the data to the model
-				model.addData(xy, "Series " + Integer.toString(i + 1));
-
-				// Set to markers only
-				model.setSeriesLine("Series " + Integer.toString(i + 1), false);
-				model
-						.setSeriesMarker("Series " + Integer.toString(i + 1),
-								true);
-			}
-			*/
-
-			// Create an associated coordinate system object
-			CoordSystem coord = new CoordSystem(model);
-
-			// Generate the chart panel
-			chartPanel = new ChartPanel(model, "Entropy by Column");
-
-			// Add the coordinate system to the chart
-			chartPanel.setCoordSystem(coord);
-
-			// Add the chart renderer
-			MultiScatterChartRenderer renderer = new MultiScatterChartRenderer(
-					coord, model);
-
-			// Disable the point buffering in the renderer since this will be a
-			// dynamic graph
-			renderer.setAllowBuffer(false);
-
-			// Add a renderer to the chart
-			chartPanel.addChartRenderer(renderer, 0);
-
-		}
-		return chartPanel;
-	}
-
-	/**
-	 * Listener for our single menu item and our two buttons. The proper action
-	 * is taken based on which component caused the event to occur.
-	 */
-	public void actionPerformed(java.awt.event.ActionEvent e) {
-		// If this was our exit button responding, dispose of the dialog
-		//if (e.getSource() == m_exit)
-			//dispose();
-	}
-
-	/** Adds another random series to the plot */
-	public void addSeries(double series[][]) {
-		double[][] data = series;
-
-		// Access the model
-		MultiScatterDataModel model = (MultiScatterDataModel) chartPanel
-				.getChartDataModel();
-
-		// Get the current count of series
-		int series_count = model.getDataSetNumber();
-
-		String seriesName = "Entropy by column";
-		model.addData(data, seriesName);
-		model.setSeriesLine(seriesName, true);
-		//model.setSeriesMarker(seriesName, true);
-		model.setMinimumValueY(0);
-		model.setMaximumValueY(8);
-
-		// Set to markers only
-		//model.setSeriesLine("Series " + Integer.toString(series_count + 1),
-		//		false);
-		//model.setSeriesMarker("Series " + Integer.toString(series_count + 1),
-		//		true);
-
-		// Force a redraw
-		getChartPanel().repaint();
-	}
-
-	/**
-	 * Main routine to start the demonstration dialog
-	 * 
-	 * @param args
-	 *            unnecessary command line arguments
-	 */
-	public static void main(String[] args) {
-
-		// Make this application appear native
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (Exception e) {
-			System.out.println("Change of LNF failed...");
-		}
-
-		// Construct our bar chart dialog
-		//EntropyChart temp = new EntropyChart();
-
-		// Make the dialog visible
-		//temp.setVisible(true);
-	}
 }
