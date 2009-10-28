@@ -64,7 +64,7 @@ public class CookieCollector implements Runnable {
     public void run() {
         int i, j;  // loop variable
 
-        System.out.println("hello thread");
+        //System.out.println("hello thread");
  
         if (postMethod) // not support post at this moment
             return;
