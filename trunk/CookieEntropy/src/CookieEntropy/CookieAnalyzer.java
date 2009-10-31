@@ -63,6 +63,10 @@ public class CookieAnalyzer {
 	 * AlphaNumeric
 	 */
 	private static final int MD5 = 6;
+	/**
+	 * SHA1
+	 */
+	private static final int SHA1 = 7;
 
 	/*************************************************************
 	 * CONSTRUCTOR
@@ -295,6 +299,13 @@ public class CookieAnalyzer {
 			type = HEX;
 		}
 		
+		//Regex to find SHA1 Hash Strings
+		p = Pattern.compile("^[0-9a-fA-F]{40}$");
+		m = p.matcher(value);
+		if (m.find()) {
+			type = SHA1;
+		}
+		
 		//Regex to find MD5 Hash strings
 		p = Pattern.compile("^[0-9a-fA-F]{32}$");
 		m = p.matcher(value);
@@ -329,6 +340,8 @@ public class CookieAnalyzer {
 			return "MD5 Hash";
 		} else if (type == BINARY) {
 			return "Binary";
+		} else if (type == SHA1){
+			return "SHA1 Hash";
 		} else {
 			return "Unknown Character Set";
 		}
@@ -378,7 +391,8 @@ public class CookieAnalyzer {
 	 */
 	public static void main(String[] args) {
 		List values = new ArrayList<String>();
-		values.add("12358784359875ff");
+		values.add("3fc92cdde005687144dc75fa6920f9366b7d4ca1");
+		/**
 		values.add("4234534f3345d35c");
 		values.add("69873aac24545ed5");
 		values.add("69873aac245634d5");
@@ -390,6 +404,7 @@ public class CookieAnalyzer {
 		values.add("69873aac24545ed5");
 		values.add("69873aa453636ed5");
 		values.add("aaaaaaaaaaaaaaaa");
+		*/
 		String key = "PHPSESSID";
 		CookieValues cv = new CookieValues();
 		cv.name = key;
