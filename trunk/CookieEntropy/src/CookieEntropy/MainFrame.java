@@ -598,7 +598,8 @@ public class MainFrame extends javax.swing.JFrame implements
 				entropies[i] =  Double.parseDouble(entropy[i]);
 			}
 			EntropyDialog ent = new EntropyDialog(this, false);
-			ent.setTitle("Cookie: " + cv.name + " | Count: "+cv.values.size());
+			ent.setTitle("Cookie: " + cv.name + " | Count: "+cv.values.size()
+				    + " | URL: " + txtLoginURL.getText());
 			ent.setSize(450, 300);
 			EntropyChart ec = new EntropyChart(ent,
 				cv.name, ca.totalEntropy(), ca.countChars(),
