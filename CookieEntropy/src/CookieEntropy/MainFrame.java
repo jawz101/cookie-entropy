@@ -488,6 +488,7 @@ public class MainFrame extends javax.swing.JFrame implements
 	private void getCookiesActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_getCookiesActionPerformed
 		String host = jTextField1.getText();
 		jLabel7.setText("");
+		characteristics = true;
 		try {
 			ReadParosData rpd = new ReadParosData(file, host);
 
@@ -505,7 +506,7 @@ public class MainFrame extends javax.swing.JFrame implements
 					}
 				}
 			}
-			
+
 			// Sets same cookie values to null
 			int count = 0;
 			for (int i = 0; i < cookies.length; i++) {
@@ -513,7 +514,7 @@ public class MainFrame extends javax.swing.JFrame implements
 					cookies[i] = null;
 				} else {
 					allCookies += cookies[i];
-					count ++;
+					count++;
 				}
 			}
 			jLabel6.setText("Session Management: Unknown or not used");
@@ -529,10 +530,11 @@ public class MainFrame extends javax.swing.JFrame implements
 			}
 		} catch (IOException ioe) {
 			System.out.println("Error reading file!");
-		} catch (NullPointerException npe){
+		} catch (NullPointerException npe) {
 			System.out.println("No File Selected!");
-			JOptionPane.showMessageDialog(this,"No File Selected!", "Error", JOptionPane.ERROR_MESSAGE);
-		} catch (Exception e){
+			JOptionPane.showMessageDialog(this, "No File Selected!", "Error",
+					JOptionPane.ERROR_MESSAGE);
+		} catch (Exception e) {
 			System.out.println("We've got some problems.....");
 			e.printStackTrace();
 		}
@@ -554,8 +556,9 @@ public class MainFrame extends javax.swing.JFrame implements
 	int cookieTableRows = 0;
 
 	private void btnRunActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnRunActionPerformed
-		//System.out.println("hello world");
+		// System.out.println("hello world");
 		jLabel7.setText("");
+		characteristics = true;
 		String loginURL = txtLoginURL.getText();
 		int repeats = Integer.parseInt(txtRepeats.getText());
 		CookieCollector cc = new CookieCollector(loginURL, repeats, this);
@@ -575,12 +578,7 @@ public class MainFrame extends javax.swing.JFrame implements
 	// }// GEN-LAST:event_jTable1MouseClicked
 
 	private void btnShowEntropyActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnShowEntropyActionPerformed
-		// Construct our bar chart dialog
-		//Entropies ent = new Entropies();
-
-		//java.awt.EventQueue.invokeLater(new Runnable() {
-		   // public void run() {
-		   try {
+		try {
 			int cindex = cbbCookies.getSelectedIndex();
 			CookieValues cv = allCookieValues[cindex];
 			CookieAnalyzer ca = new CookieAnalyzer(cv);
@@ -588,41 +586,29 @@ public class MainFrame extends javax.swing.JFrame implements
 			System.out.println(ca.countChars());
 			System.out.println(ca.totalEntropy());
 			String[] entropy = ca.columnEntropy();
+			String level = ca.entropyLevel();
 			double[][] coords = new double[entropy.length][entropy.length];
 			double[] cols = new double[entropy.length];
 			String[] nums = new String[entropy.length];
 			double[] entropies = new double[entropy.length];
-			for (int i = 0; i < entropy.length; i++){
-				cols[i] = i+1;
-				nums[i] = String.valueOf(i+1);
-				entropies[i] =  Double.parseDouble(entropy[i]);
+			for (int i = 0; i < entropy.length; i++) {
+				cols[i] = i + 1;
+				nums[i] = String.valueOf(i + 1);
+				entropies[i] = Double.parseDouble(entropy[i]);
 			}
 			EntropyDialog ent = new EntropyDialog(this, false);
-			ent.setTitle("Cookie: " + cv.name + " | Count: "+cv.values.size()
-				    + " | URL: " + txtLoginURL.getText());
-			ent.setSize(450, 300);
-			EntropyChart ec = new EntropyChart(ent,
-				cv.name, ca.totalEntropy(), ca.countChars(),
-				ca.encoding(), nums, entropies);
-			//ec.addSeries(cols, entropies);
+			ent.setTitle("Cookie: " + cv.name + " | Count: " + cv.values.size()
+					+ " | URL: " + txtLoginURL.getText());
+			ent.setSize(600, 300);
+			
+			EntropyChart ec = new EntropyChart(ent, cv.name, ca.totalEntropy(),
+					ca.countChars(), ca.encoding(), level, nums, entropies);
 			ent.setVisible(true);
-		   // }
-		//});
-
-		//EntropyChart ec = new EntropyChart();
-		//ec.addSeries(coords);
-		// Make the dialog visible
-		//ec.setVisible(true);
-		}catch (Exception e){
+		} catch (Exception e) {
 			System.out.println("Error getting entropy values");
-			JOptionPane.showMessageDialog(this, "Error Getting Entropy Data", "Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, "Error Getting Entropy Data",
+					"Error", JOptionPane.ERROR_MESSAGE);
 		}
-		/*
-		entropy = ca.cookieEntropy();
-		for (int i = 0; i < entropy.length; i++)
-			System.out.println(entropy[i]);
-			*/
-		// System.out.print(cv);
 	}// GEN-LAST:event_btnShowEntropyActionPerformed
 
 	/**
@@ -663,7 +649,7 @@ public class MainFrame extends javax.swing.JFrame implements
 
 	public void receiveCookie(List<KeyValuePair> params,
 			List<KeyValuePair> cookies) {
-		//System.out.println("Receive " + cookies.size() + " Cookie\n");
+		// System.out.println("Receive " + cookies.size() + " Cookie\n");
 
 		List<KeyValuePair> c = CookieCollector.decomposeCookies(cookies);
 
@@ -699,11 +685,12 @@ public class MainFrame extends javax.swing.JFrame implements
 				tblCookie.setValueAt(kv.value, nextRow, cidx);
 				allCookieValues[cidx].addValue(kv.value);
 			}
-			//System.out.println("key=" + kv.key + "\tvalue=" + kv.value);
+			// System.out.println("key=" + kv.key + "\tvalue=" + kv.value);
 		}
 		nextRow++;
 		if (characteristics) {
 			jLabel3.setText("Number of Cookie Parameters: " + c.size());
+			characteristics = false;
 		}
 	}
 
