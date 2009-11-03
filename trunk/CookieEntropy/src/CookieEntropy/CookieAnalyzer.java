@@ -34,6 +34,10 @@ public class CookieAnalyzer {
 	 * The key of the cookie
 	 */
 	private String key;
+	/**
+	 * Average column entropy
+	 */
+	private double[] colEntropies;
 
 	/*************************************************************
 	 * CONSTANTS
@@ -101,6 +105,7 @@ public class CookieAnalyzer {
 		String[] arrayVals = values.toArray(new String[0]);
 		// finds the shortest char length of all cookie values
 		int shortest = findShortest(arrayVals);
+		colEntropies = new double[shortest];
 		String[] entropyStr = new String[shortest];
 		// val stores the value of the column splits into a String
 		String val = "";
@@ -110,10 +115,38 @@ public class CookieAnalyzer {
 			for (int j = 0; j < arrayVals.length; j++) {
 				val = val + arrayVals[j].charAt(i);
 			}
-			entropyStr[i] = df.format(entropy(val));
+			colEntropies[i] = entropy(val);
+			entropyStr[i] = df.format(colEntropies[i]);
 			val = "";
 		}
 		return entropyStr;
+	}
+
+	/**
+	 * Gets the entropy level of the cookies ranking from little to not entropy
+	 * to very high entropy
+	 * 
+	 * @return Entropy level
+	 */
+	public String entropyLevel() {
+		double total = 0.0;
+		for (int i = 0; i < colEntropies.length; i++) {
+			total += colEntropies[i];
+		}
+		double average = total / ((double) colEntropies.length);
+
+		if (average < .75)
+			return "Little To None";
+		else if (average < 1.5)
+			return "Very Low";
+		else if (average < 3.0)
+			return "Low";
+		else if (average < 4.0)
+			return "Medium";
+		else if (average < 5.2)
+			return "High";
+		else
+			return "Very High";
 	}
 
 	/**
@@ -198,7 +231,7 @@ public class CookieAnalyzer {
 					+ (probability * (double) (Math.log10(probability) / Math
 							.log10(2)));
 		}
-		return entropy * (double)-1;
+		return entropy * (double) -1;
 	}
 
 	/**
@@ -256,12 +289,12 @@ public class CookieAnalyzer {
 		}
 
 		if (variable) {
-			//return "Not fixed length. Character lengths of:" + count;
-		    return "variable";
+			// return "Not fixed length. Character lengths of:" + count;
+			return "variable";
 		} else {
-			//return "Fixed length of " + Integer.toString(chars[0])
-			//		+ " characters";
-		    return Integer.toString(chars[0]);
+			// return "Fixed length of " + Integer.toString(chars[0])
+			// + " characters";
+			return Integer.toString(chars[0]);
 		}
 	}
 
@@ -298,15 +331,15 @@ public class CookieAnalyzer {
 		if (m.find()) {
 			type = HEX;
 		}
-		
-		//Regex to find SHA1 Hash Strings
+
+		// Regex to find SHA1 Hash Strings
 		p = Pattern.compile("^[0-9a-fA-F]{40}$");
 		m = p.matcher(value);
 		if (m.find()) {
 			type = SHA1;
 		}
-		
-		//Regex to find MD5 Hash strings
+
+		// Regex to find MD5 Hash strings
 		p = Pattern.compile("^[0-9a-fA-F]{32}$");
 		m = p.matcher(value);
 		if (m.find()) {
@@ -340,7 +373,7 @@ public class CookieAnalyzer {
 			return "MD5 Hash";
 		} else if (type == BINARY) {
 			return "Binary";
-		} else if (type == SHA1){
+		} else if (type == SHA1) {
 			return "SHA1 Hash";
 		} else {
 			return "Unknown Character Set";
@@ -350,15 +383,14 @@ public class CookieAnalyzer {
 
 	/**
 	 * Identifies the type of session management the cookie is using if any at
-	 * all. Also, if the cookie key is a Google Analytics cookies, this info
-	 * will be returned as well
+	 * all.
 	 * 
 	 * @return Returns the session management type
 	 */
 	public String sessionManagement() {
 		// Default value
 		String session = "Unknown";
-		 if (key.equals("ASPSESSIONID") || key.contains("ASPSESS")) {
+		if (key.equals("ASPSESSIONID") || key.contains("ASPSESS")) {
 			session = " ASP Session ID used";
 		} else if (key.equals("PHPSESSID")) {
 			session = " PHP Session ID used";
@@ -366,16 +398,16 @@ public class CookieAnalyzer {
 			session = " Coldfusion Session ID used";
 		} else if (key.equals("JSESSIONID")) {
 			session = " JAVA (JSP) Session ID";
-		} 
+		}
 		return session;
 	}
-	
+
 	/**
 	 * Checks if the cookie is using Google Analytics
 	 * 
 	 * @return Returns boolean value true if using Google Analytics
 	 */
-	public boolean googleAnalytics(){
+	public boolean googleAnalytics() {
 		// Regex to find Google Analytics cookie keys
 		Pattern p = Pattern.compile("^[__utm]");
 		Matcher m = p.matcher(key);
@@ -393,18 +425,13 @@ public class CookieAnalyzer {
 		List values = new ArrayList<String>();
 		values.add("3fc92cdde005687144dc75fa6920f9366b7d4ca1");
 		/**
-		values.add("4234534f3345d35c");
-		values.add("69873aac24545ed5");
-		values.add("69873aac245634d5");
-		values.add("69873a6644545ed5");
-		values.add("69873aac54545ed5");
-		values.add("69873aac24545645");
-		values.add("69873aac24555ed5");
-		values.add("69873aac24545ed5");
-		values.add("69873aac24545ed5");
-		values.add("69873aa453636ed5");
-		values.add("aaaaaaaaaaaaaaaa");
-		*/
+		 * values.add("4234534f3345d35c"); values.add("69873aac24545ed5");
+		 * values.add("69873aac245634d5"); values.add("69873a6644545ed5");
+		 * values.add("69873aac54545ed5"); values.add("69873aac24545645");
+		 * values.add("69873aac24555ed5"); values.add("69873aac24545ed5");
+		 * values.add("69873aac24545ed5"); values.add("69873aa453636ed5");
+		 * values.add("aaaaaaaaaaaaaaaa");
+		 */
 		String key = "PHPSESSID";
 		CookieValues cv = new CookieValues();
 		cv.name = key;

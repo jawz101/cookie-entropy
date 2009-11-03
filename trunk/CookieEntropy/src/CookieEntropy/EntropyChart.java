@@ -59,7 +59,7 @@ public class EntropyChart{
 	/** The panel containing our chart */
 	ChartPanel chartPanel = null;
 	public EntropyChart(JDialog dlg, String cookieName, String totalEntropy,
-		String cookieLen, String cookieEncoding, String[] x, double[] y) {
+		String cookieLen, String cookieEncoding, String level, String[] x, double[] y) {
 	    JPanel chartPane = new JPanel();
 	    chartPane.setLayout(new BorderLayout());
 	    dlg.setContentPane(chartPane);
@@ -77,7 +77,7 @@ public class EntropyChart{
 	    CoordSystem coord = new CoordSystem(model, "Column", "Entropy");
 
 	    chartPanel = new ChartPanel(model, " Entropy: " + totalEntropy
-			+" Encoding: "+cookieEncoding+" Len: "+cookieLen);
+			+" Encoding: "+cookieEncoding+" Len: "+cookieLen + " Entropy Level: " + level);
 	    chartPanel.getTitle().setFont(new java.awt.Font("Courier",
 			 java.awt.Font.PLAIN, 14));
 		// Add the coordinate system to the chart
